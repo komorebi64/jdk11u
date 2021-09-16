@@ -1403,6 +1403,7 @@ ClassFileStream* ClassLoader::search_module_entries(const GrowableArray<ModuleCl
   return NULL;
 }
 
+// 定位磁盘上字节码文件的位置
 // Called by the boot classloader to load classes
 InstanceKlass* ClassLoader::load_class(Symbol* name, bool search_append_only, TRAPS) {
   assert(name != NULL, "invariant");
@@ -1492,6 +1493,7 @@ InstanceKlass* ClassLoader::load_class(Symbol* name, bool search_append_only, TR
   ClassLoaderData* loader_data = ClassLoaderData::the_null_class_loader_data();
   Handle protection_domain;
 
+  // 由工厂创建Klass
   InstanceKlass* result = KlassFactory::create_from_stream(stream,
                                                            name,
                                                            loader_data,

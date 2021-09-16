@@ -388,6 +388,7 @@ JLI_Launch(int argc, char ** argv,              /* main argc, argv */
     } while (JNI_FALSE)
 
 
+// JVM 入口
 int
 JavaMain(void* _args)
 {

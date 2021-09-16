@@ -5561,9 +5561,11 @@ InstanceKlass* ClassFileParser::create_instance_klass(bool changed_by_loadhook, 
     return _klass;
   }
 
+  // 分配 InstanceKlass 所需内存
   InstanceKlass* const ik =
     InstanceKlass::allocate_instance_klass(*this, CHECK_NULL);
 
+  // 结合解析数据填充 InstanceKlass
   fill_instance_klass(ik, changed_by_loadhook, CHECK_NULL);
 
   assert(_klass == ik, "invariant");
@@ -5698,6 +5700,7 @@ void ClassFileParser::fill_instance_klass(InstanceKlass* ik, bool changed_by_loa
   _transitive_interfaces = NULL;
 
   // Initialize itable offset tables
+  // 初始化 itable 偏移表
   klassItable::setup_itable_offset_table(ik);
 
   // Compute transitive closure of interfaces this class implements
@@ -5733,6 +5736,7 @@ void ClassFileParser::fill_instance_klass(InstanceKlass* ik, bool changed_by_loa
 
   // Allocate mirror and initialize static fields
   // The create_mirror() call will also call compute_modifiers()
+  // 分配Klass对应的 java.lang.Class 在Java层描述类
   java_lang_Class::create_mirror(ik,
                                  Handle(THREAD, _loader_data->class_loader()),
                                  module_handle,
@@ -5743,6 +5747,7 @@ void ClassFileParser::fill_instance_klass(InstanceKlass* ik, bool changed_by_loa
 
   // Generate any default methods - default methods are public interface methods
   // that have a default implementation.  This is new with Java 8.
+  // 生成任何默认方法 - 默认方法是具有默认实现的公共接口方法。
   if (_has_nonstatic_concrete_methods) {
     DefaultMethods::generate_default_methods(ik,
                                              _all_mirandas,
@@ -6060,6 +6065,7 @@ ClassFileParser::~ClassFileParser() {
   }
 }
 
+// 类文件解析
 void ClassFileParser::parse_stream(const ClassFileStream* const stream,
                                    TRAPS) {
 
